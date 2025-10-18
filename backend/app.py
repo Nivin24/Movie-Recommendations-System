@@ -86,5 +86,15 @@ def get_poster(movie_title):
     details = asyncio.run(fetch_movie_details())
     return jsonify(details)
     
+# Development
+
+# if __name__ == '__main__':
+#     app.run(debug=True)
+
+# Deployment
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    # For local testing
+    from waitress import serve  # production-grade WSGI server
+    port = int(os.environ.get('PORT', 5000))
+    serve(app, host='0.0.0.0', port=port)

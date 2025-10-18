@@ -2,3 +2,11 @@ Flask
 numpy
 pandas
 scikit-learn
+Flask
+Flask-Cors
+waitress
+requests
+python-dotenv
+aiohttp
+asyncio
+pickle5
