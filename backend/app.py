@@ -4,7 +4,7 @@ import pickle
 from dotenv import load_dotenv
 import aiohttp, asyncio
 import os
-import requests
+import gdown
 
 
 # Load environment variables
@@ -19,16 +19,9 @@ def download_file_from_google_drive(file_id, destination):
         print(f"{destination} already exists, skipping download.")
         return
 
-    URL = f"https://drive.google.com/uc?export=download&id={file_id}"
-    response = requests.get(URL, stream=True)
-
-    if response.status_code == 200:
-        with open(destination, "wb") as f:
-            for chunk in response.iter_content(32768):
-                f.write(chunk)
-        print(f"{destination} downloaded successfully.")
-    else:
-        raise Exception(f"Failed to download file: status code {response.status_code}")
+    url = f"https://drive.google.com/uc?id={file_id}"
+    gdown.download(url, destination, quiet=False)
+    print(f"{destination} downloaded successfully.")
     
 MOVIES_FILE = 'movies.pkl'
 SIMILARITY_FILE = 'similarity.pkl'
