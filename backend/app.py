@@ -4,6 +4,7 @@ import pickle
 from dotenv import load_dotenv
 import aiohttp, asyncio
 import os
+import requests
 
 
 # Load environment variables
@@ -83,7 +84,6 @@ def recommend_movies():
     recommendations = recommend(movie_name)
     return jsonify({"recommended_movies": recommendations})
 
-import requests
 
 @app.route('/poster/<movie_title>')
 def get_poster(movie_title):
