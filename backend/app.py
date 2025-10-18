@@ -11,13 +11,41 @@ load_dotenv()
 
 app = Flask(__name__, static_folder='../frontend', template_folder='../frontend')
 CORS(app)  
+ 
 
+def download_file_from_google_drive(file_id, destination):
+    if os.path.exists(destination):
+        print(f"{destination} already exists, skipping download.")
+        return
 
-# Load the model and data
-movies = pickle.load(open('movies.pkl', 'rb'))
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+    URL = f"https://drive.google.com/uc?export=download&id={file_id}"
+    response = requests.get(URL, stream=True)
 
+    if response.status_code == 200:
+        with open(destination, "wb") as f:
+            for chunk in response.iter_content(32768):
+                f.write(chunk)
+        print(f"{destination} downloaded successfully.")
+    else:
+        raise Exception(f"Failed to download file: status code {response.status_code}")
+    
+MOVIES_FILE = 'movies.pkl'
+SIMILARITY_FILE = 'similarity.pkl'
 
+# Google Drive file IDs
+MOVIES_FILE_ID = 'https://drive.google.com/file/d/1ZB2FRD8OfPTbyqIvtjjU4l0_hy8HGO5W/view?usp=sharing'
+SIMILARITY_FILE_ID = 'https://drive.google.com/file/d/1DY28JITY5tpsqiWZrxqiWoHD5Dal6xYq/view?usp=sharing'
+
+download_file_from_google_drive(MOVIES_FILE_ID, MOVIES_FILE)
+download_file_from_google_drive(SIMILARITY_FILE_ID, SIMILARITY_FILE)
+
+# Load the pickle files
+with open(MOVIES_FILE, 'rb') as f:
+    movies = pickle.load(f)
+
+with open(SIMILARITY_FILE, 'rb') as f:
+    similarity = pickle.load(f)
+    
 # Function to get recommendations
 def recommend(movie):
     movie_lower = movie.lower()
