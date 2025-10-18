@@ -21,7 +21,7 @@ recommendBtn.addEventListener('click', async () => {
   loadingDiv.classList.remove('hidden');
 
   try {
-    const response = await fetch('http://127.0.0.1:5000/recommend', {
+    const response = await fetch('/recommend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ movie: movieName })
@@ -69,7 +69,7 @@ recommendBtn.addEventListener('click', async () => {
 // Fetch movie images
 async function fetchMovieDetails(movieTitle) {
   try {
-    const response = await fetch(`http://127.0.0.1:5000/poster/${encodeURIComponent(movieTitle)}`);
+    const response = await fetch(`/poster/${encodeURIComponent(movieTitle)}`);
     const data = await response.json();
 
     return {
